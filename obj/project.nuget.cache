@@ -1,8 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "kHfdDLTPCNCJzF8Yw5IhiEjFNmUCNqva0vORz4Th+X1BJhKqxYR6kOwB2IvUQi7L1nSLoz2IyLcowuuY2Rnmfw==",
+  "dgSpecHash": "mBcRZsHaCoES+Q3Ju1EY1RFPYbt4o9R2zPFFlwYQlAgBKgl6oY0l5HU1z/vYCcXu+iE9+5X268RoK2/SvuGzuA==",
   "success": true,
   "projectFilePath": "C:\\WebApplicationsDevelopment\\TaskTrackerMVC\\TaskTrackerMVC.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\aronm\\.nuget\\packages\\system.text.encodings.web\\8.0.0\\system.text.encodings.web.8.0.0.nupkg.sha512",
+    "C:\\Users\\aronm\\.nuget\\packages\\system.text.json\\8.0.3\\system.text.json.8.0.3.nupkg.sha512"
+  ],
   "logs": []
 }

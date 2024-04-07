@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 public class TaskAPIService
 {
@@ -20,7 +20,7 @@ public class TaskAPIService
         var response = await _httpClient.GetAsync(_baseAddress);
         response.EnsureSuccessStatusCode();
         var content = await response.Content.ReadAsStringAsync();
-        return JsonConvert.DeserializeObject<IEnumerable<TaskModel>>(content);
+        return JsonSerializer.Deserialize<IEnumerable<TaskModel>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
     }
 
     // Add methods for POST, PUT, DELETE, etc.
