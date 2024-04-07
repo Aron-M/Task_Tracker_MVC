@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity; // If using ASP.NET Core Identity
-using TaskTrackerMVC.Models; // Replace with the namespace of your MVC project
-// Add any other necessary using directives
+using TaskTrackerMVC.Models;
+
 
 namespace Task_Tracker_MVC.Controllers
 {
