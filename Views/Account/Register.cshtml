@@ -1,0 +1,25 @@
+@model TaskTrackerMVC.ViewModels.RegisterViewModel
+
+<h2>Create Your Profile</h2>
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div>
+        @Html.LabelFor(m => m.Username)
+        @Html.TextBoxFor(m => m.Username)
+    </div>
+
+    <div>
+        @Html.LabelFor(m => m.Email)
+        @Html.TextBoxFor(m => m.Email)
+    </div>
+
+    <div>
+        @Html.LabelFor(m => m.Password)
+        @Html.PasswordFor(m => m.Password)
+    </div>
+
+    <button type="submit">Create Profile</button>
+}
