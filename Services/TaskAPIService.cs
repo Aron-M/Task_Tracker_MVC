@@ -4,24 +4,22 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Text.Json;
 
-public class TaskAPIService
+namespace TaskTrackerMVC.Services // Remove the semicolon here
 {
-    private readonly HttpClient _httpClient;
-    private readonly string _baseAddress;
-
-    public TaskAPIService(HttpClient httpClient)
+    public class TaskAPIService
     {
-        _httpClient = httpClient;
-        _baseAddress = "http://localhost:5000/api/tasks"; // Replace with your API's base URL
-    }
+        private readonly HttpClient _httpClient;
+        private readonly string _baseAddress = "https://example.com/api/tasks"; // Replace with the actual base address
 
-    public async Task<IEnumerable<TaskModel>> GetAllTasksAsync()
-    {
-        var response = await _httpClient.GetAsync(_baseAddress);
-        response.EnsureSuccessStatusCode();
-        var content = await response.Content.ReadAsStringAsync();
-        return JsonSerializer.Deserialize<IEnumerable<TaskModel>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-    }
+        public async Task<IEnumerable<TaskModel>> GetAllTasksAsync()
+        {
+            var response = await _httpClient.GetAsync(_baseAddress);
+            response.EnsureSuccessStatusCode();
+            var content = await response.Content.ReadAsStringAsync();
+            var tasks = JsonSerializer.Deserialize<IEnumerable<TaskModel>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            return tasks ?? Enumerable.Empty<TaskModel>();
+        }
 
-    // Add methods for POST, PUT, DELETE, etc.
+        // Add methods for POST, PUT, DELETE, etc.
+    }
 }
