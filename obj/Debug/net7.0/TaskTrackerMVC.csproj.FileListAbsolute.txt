@@ -28,3 +28,12 @@ C:\WebApplicationsDevelopment\TaskTrackerMVC\obj\Debug\net7.0\refint\TaskTracker
 C:\WebApplicationsDevelopment\TaskTrackerMVC\obj\Debug\net7.0\TaskTrackerMVC.pdb
 C:\WebApplicationsDevelopment\TaskTrackerMVC\obj\Debug\net7.0\TaskTrackerMVC.genruntimeconfig.cache
 C:\WebApplicationsDevelopment\TaskTrackerMVC\obj\Debug\net7.0\ref\TaskTrackerMVC.dll
+C:\WebApplicationsDevelopment\TaskTrackerMVC\bin\Debug\net7.0\Humanizer.dll
+C:\WebApplicationsDevelopment\TaskTrackerMVC\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.dll
+C:\WebApplicationsDevelopment\TaskTrackerMVC\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\WebApplicationsDevelopment\TaskTrackerMVC\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\WebApplicationsDevelopment\TaskTrackerMVC\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\WebApplicationsDevelopment\TaskTrackerMVC\bin\Debug\net7.0\Microsoft.Extensions.DependencyModel.dll
+C:\WebApplicationsDevelopment\TaskTrackerMVC\bin\Debug\net7.0\Mono.TextTemplating.dll
+C:\WebApplicationsDevelopment\TaskTrackerMVC\bin\Debug\net7.0\System.CodeDom.dll
+C:\WebApplicationsDevelopment\TaskTrackerMVC\obj\Debug\net7.0\TaskTrackerMVC.csproj.CopyComplete
