@@ -1,29 +1,95 @@
-// API UsersController
-[HttpPost]
-public async Task<IActionResult> Register([FromBody] User user)
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity; // If using ASP.NET Core Identity
+using TaskTrackerMVC.Models; // Replace with the namespace of your MVC project
+// Add any other necessary using directives
+
+namespace Task_Tracker_MVC.Controllers
 {
-    if (ModelState.IsValid)
+    public class AccountController : Controller
     {
-        // Hash the password before saving
-        user.Password = HashPassword(user.Password);
+        private readonly UserManager<IdentityUser> _userManager; // If using ASP.NET Core Identity
+        private readonly SignInManager<IdentityUser> _signInManager; // If using ASP.NET Core Identity
 
-        // Use HttpClient to send a POST request to your API
-        using (var client = new HttpClient())
+        // Inject UserManager and SignInManager if using ASP.NET Core Identity
+        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
-            var content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("http://localhost:5000/api/users", content);
-
-            if (response.IsSuccessStatusCode)
-            {
-                // Handle success (e.g., redirect to dashboard)
-                return RedirectToAction("Index", "Dashboard");
-            }
-            else
-            {
-                // Handle errors (e.g., display error message)
-                ModelState.AddModelError(string.Empty, "Registration failed.");
-            }
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
+
+        // GET: Account/Register
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        // POST: Account/Register
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new IdentityUser { UserName = model.Email, Email = model.Email };
+                var result = await _userManager.CreateAsync(user, model.Password);
+
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return RedirectToAction("Index", "Home");
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+            return View(model);
+        }
+
+        // GET: Account/Login
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        // POST: Account/Login
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+
+                if (result.Succeeded)
+                {
+                    if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                    {
+                        return Redirect(returnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    return View(model);
+                }
+            }
+            return View(model);
+        }
+
+        // POST: Account/Logout
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
+
+        // Other actions...
     }
-    return BadRequest(ModelState);
 }

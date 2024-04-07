@@ -1,95 +1,100 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity; // If using ASP.NET Core Identity
-using TaskTrackerMVC.Models; // Replace with the namespace of your MVC project
-// Add any other necessary using directives
+using TaskTrackerMVC.Services;
+using TaskTrackerMVC.Models;
+using System.Threading.Tasks;
 
-namespace Task_Tracker_MVC.Controllers
+public class TasksController : Controller
 {
-    public class AccountController : Controller
+    private readonly TaskAPIService _taskAPIService;
+
+    public TasksController(TaskAPIService taskAPIService)
     {
-        private readonly UserManager<IdentityUser> _userManager; // If using ASP.NET Core Identity
-        private readonly SignInManager<IdentityUser> _signInManager; // If using ASP.NET Core Identity
+        _taskAPIService = taskAPIService;
+    }
 
-        // Inject UserManager and SignInManager if using ASP.NET Core Identity
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+    // GET: Tasks
+    public async Task<IActionResult> Index()
+    {
+        var tasks = await _taskAPIService.GetAllTasksAsync();
+        return View(tasks);
+    }
+
+    // GET: Tasks/Details/5
+    public async Task<IActionResult> Details(int id)
+    {
+        var task = await _taskAPIService.GetTaskByIdAsync(id);
+        if (task == null)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            return NotFound();
+        }
+        return View(task);
+    }
+
+    // GET: Tasks/Create
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+    // POST: Tasks/Create
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(TaskModel task)
+    {
+        if (ModelState.IsValid)
+        {
+            await _taskAPIService.CreateTaskAsync(task);
+            return RedirectToAction(nameof(Index));
+        }
+        return View(task);
+    }
+
+    // GET: Tasks/Edit/5
+    public async Task<IActionResult> Edit(int id)
+    {
+        var task = await _taskAPIService.GetTaskByIdAsync(id);
+        if (task == null)
+        {
+            return NotFound();
+        }
+        return View(task);
+    }
+
+    // POST: Tasks/Edit/5
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, TaskModel task)
+    {
+        if (id != task.TaskId)
+        {
+            return NotFound();
         }
 
-        // GET: Account/Register
-        public IActionResult Register()
+        if (ModelState.IsValid)
         {
-            return View();
+            await _taskAPIService.UpdateTaskAsync(task);
+            return RedirectToAction(nameof(Index));
         }
+        return View(task);
+    }
 
-        // POST: Account/Register
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model)
+    // GET: Tasks/Delete/5
+    public async Task<IActionResult> Delete(int id)
+    {
+        var task = await _taskAPIService.GetTaskByIdAsync(id);
+        if (task == null)
         {
-            if (ModelState.IsValid)
-            {
-                var user = new IdentityUser { UserName = model.Email, Email = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
-
-                if (result.Succeeded)
-                {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
-                }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
-            }
-            return View(model);
+            return NotFound();
         }
+        return View(task);
+    }
 
-        // GET: Account/Login
-        public IActionResult Login()
-        {
-            return View();
-        }
-
-        // POST: Account/Login
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
-        {
-            if (ModelState.IsValid)
-            {
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-
-                if (result.Succeeded)
-                {
-                    if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
-                    {
-                        return Redirect(returnUrl);
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return View(model);
-                }
-            }
-            return View(model);
-        }
-
-        // POST: Account/Logout
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Logout()
-        {
-            await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
-        }
-
-        // Other actions...
+    // POST: Tasks/Delete/5
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        await _taskAPIService.DeleteTaskAsync(id);
+        return RedirectToAction(nameof(Index));
     }
 }
