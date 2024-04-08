@@ -7,46 +7,48 @@ using System.Text;
 
 namespace TaskTrackerMVC.Services
 {
-    public class TaskAPIService
+    public class UserAPIService
     {
         private readonly HttpClient _httpClient;
 
-        public TaskAPIService(HttpClient httpClient)
+        public UserAPIService(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
 
-        public async Task<IEnumerable<TaskModel>> GetAllTasksAsync()
+        public async Task<IEnumerable<UserModel>> GetAllUsersAsync()
         {
             var response = await _httpClient.GetAsync("");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IEnumerable<TaskModel>>(content);
+            var users = JsonSerializer.Deserialize<IEnumerable<UserModel>>(content);
+            return users ?? new List<UserModel>(); // Handle potential null value
         }
 
-        public async Task<TaskModel> GetTaskByIdAsync(int id)
+        public async Task<UserModel> GetUserByIdAsync(int id)
         {
             var response = await _httpClient.GetAsync($"{id}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<TaskModel>(content);
+            var user = JsonSerializer.Deserialize<UserModel>(content);
+            return user ?? throw new InvalidOperationException("User not found."); // Handle potential null value
         }
 
-        public async Task CreateTaskAsync(TaskModel task)
+        public async Task CreateUserAsync(UserModel user)
         {
-            var content = new StringContent(JsonSerializer.Serialize(task), Encoding.UTF8, "application/json");
+            var content = new StringContent(JsonSerializer.Serialize(user), Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync("", content);
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task UpdateTaskAsync(TaskModel task)
+        public async Task UpdateUserAsync(UserModel user)
         {
-            var content = new StringContent(JsonSerializer.Serialize(task), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PutAsync($"{task.TaskId}", content);
+            var content = new StringContent(JsonSerializer.Serialize(user), Encoding.UTF8, "application/json");
+            var response = await _httpClient.PutAsync($"{user.UserId}", content);
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task DeleteTaskAsync(int id)
+        public async Task DeleteUserAsync(int id)
         {
             var response = await _httpClient.DeleteAsync($"{id}");
             response.EnsureSuccessStatusCode();

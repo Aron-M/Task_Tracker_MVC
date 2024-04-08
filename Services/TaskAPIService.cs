@@ -5,7 +5,8 @@ using System.Text.Json;
 using TaskTrackerMVC.Models;
 using System.Text;
 
-
+namespace TaskTrackerMVC.Services
+{
     public class TaskAPIService
     {
         private readonly HttpClient _httpClient;
@@ -51,3 +52,4 @@ using System.Text;
             response.EnsureSuccessStatusCode();
         }
     }
+}

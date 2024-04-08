@@ -1,0 +1,31 @@
+@model IEnumerable<TaskTrackerMVC.Models.UserModel>
+
+<h2>Users</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>User ID</th>
+            <th>Username</th>
+            <th>Email</th> <!-- This is where the missing closing tag should be -->
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>@user.UserId</td>
+            <td>@user.Username</td>
+            <td>@user.Email</td> <!-- Make sure this line is correct -->
+            <td>
+                <a asp-action="Edit" asp-route-id="@user.UserId">Edit</a> 
+                <a asp-action="Details" asp-route-id="@user.UserId">Details</a> 
+                <a asp-action="Delete" asp-route-id="@user.UserId">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<a asp-action="Create">Create New User</a>
