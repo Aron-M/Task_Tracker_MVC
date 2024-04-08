@@ -1,0 +1,27 @@
+@model IEnumerable<TaskModel>
+
+<h2>Tasks</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var task in Model)
+    {
+        <tr>
+            <td>@task.Title</td>
+            <td>@task.Description</td>
+            <td>@(task.IsComplete ? "Completed" : "Pending")</td>
+        </tr>
+        <!-- Debug: Print the raw task data -->
+        <tr>
+            <td colspan="3">@System.Text.Json.JsonSerializer.Serialize(task)</td>
+        </tr>
+    }
+</tbody>
+</table>

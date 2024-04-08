@@ -1,4 +1,4 @@
-@model IEnumerable<TaskTrackerMVC.Models.UserModel>
+@model IEnumerable<UserModel>
 
 <h2>Users</h2>
 
@@ -7,7 +7,7 @@
         <tr>
             <th>User ID</th>
             <th>Username</th>
-            <th>Email</th> <!-- This is where the missing closing tag should be -->
+            <th>Email</th> 
             <th>Actions</th>
         </tr>
     </thead>
@@ -17,7 +17,7 @@
         <tr>
             <td>@user.UserId</td>
             <td>@user.Username</td>
-            <td>@user.Email</td> <!-- Make sure this line is correct -->
+            <td>@user.Email</td> 
             <td>
                 <a asp-action="Edit" asp-route-id="@user.UserId">Edit</a> 
                 <a asp-action="Details" asp-route-id="@user.UserId">Details</a> 

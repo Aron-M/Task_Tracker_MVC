@@ -21,7 +21,8 @@ namespace TaskTrackerMVC.Services
             var response = await _httpClient.GetAsync("");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IEnumerable<TaskModel>>(content);
+            var tasks = JsonSerializer.Deserialize<IEnumerable<TaskModel>>(content);
+            return tasks ?? new List<TaskModel>(); // Return an empty list if null
         }
 
         public async Task<TaskModel> GetTaskByIdAsync(int id)
@@ -29,7 +30,8 @@ namespace TaskTrackerMVC.Services
             var response = await _httpClient.GetAsync($"{id}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<TaskModel>(content);
+            var task = JsonSerializer.Deserialize<TaskModel>(content);
+            return task ?? new TaskModel(); // Return a new TaskModel if null
         }
 
         public async Task CreateTaskAsync(TaskModel task)
