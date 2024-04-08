@@ -13,6 +13,7 @@ namespace TaskTrackerMVC.Models
         [JsonPropertyName("email")]
         public string? Email { get; set; }
 
+
         // Add other user properties as needed, with [JsonPropertyName] attributes
     }
 }
